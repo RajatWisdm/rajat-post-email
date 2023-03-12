@@ -29,16 +29,36 @@ class PostEmail{
 
     function send_email( $post_id ) {
         $post = get_post( $post_id );
+
+        // $url = get_permalink( $post_id ); // Due to configuration overlapping only the home page url is taken, in production level this line should be used instead of the next line
+        $url = "https://shilavillaresort.com/wisdm"; 
+        $key = 'AIzaSyBf8czo8hCJtqdckFaHLKjvVqGSj7EGWog'; //Google PageSpeed API key
+        // https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$url&key=$key
+        $api_url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://shilavillaresort.com/wisdm&key=AIzaSyBf8czo8hCJtqdckFaHLKjvVqGSj7EGWog";
+
+        $data = file_get_contents($api_url);
+        $results = json_decode($data, true);
+
+        $score = $results['lighthouseResult']['categories']['performance']['score'] * 100;
+
+        // echo "Google PageSpeed score for $url: $score";
+
         $subject = 'New Post: ' . $post->post_title;
-        $message = 'A new post has been published on your website. View it here: ' . get_permalink( $post_id );
-        $recipient = 'dotecodegroup@gmail.com';
+        $message = "Post Title: $post->post_title\n
+        Post URL: ". get_permalink( $post_id )."\n
+        Meta Title: ".print_r(get_post_meta( $post_id, '', true ))."\n
+        Meta Description: ".get_post_meta( $post_id )."\n
+        Meta keyword: ".get_post_meta( $post_id )."\n
+        Google page speed score: ". $score."\n
+        " . get_permalink( $post_id );
+        $recipient = get_bloginfo('admin_email');
         $from = "wisdm@shilavillaresort.com";
         $header = "From: $from";
         if(mail( $recipient, $subject, $message, $header )){
             echo 'done';
         }
         else{
-            echo 'error';
+            mail( $recipient, $subject, "error", $header );
         }
     }
 
