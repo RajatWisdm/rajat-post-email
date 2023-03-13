@@ -32,7 +32,7 @@ class PostEmail{
 
         // $url = get_permalink( $post_id ); // Due to configuration overlapping only the home page url is taken, in production level this line should be used instead of the next line
         $url = "https://shilavillaresort.com/wisdm"; 
-        $key = 'AIzaSyBf8czo8hCJtqdckFaHLKjvVqGSj7EGWog'; //Google PageSpeed API key
+        $key = 'Idontwannashowyoumykey'; //Google PageSpeed API key
         // https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$url&key=$key
         $api_url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://shilavillaresort.com/wisdm&key=AIzaSyBf8czo8hCJtqdckFaHLKjvVqGSj7EGWog";
 
@@ -67,7 +67,7 @@ class PostEmail{
     }
 
     function admin_page_markup() {
-        echo "HI";
+        require_once plugin_dir_path( __FILE__ ) . 'templates/admin.php';
     }
 }
 
@@ -75,6 +75,9 @@ if ( class_exists( 'PostEmail' ) ){
     $cal = new PostEmail();
     $cal->register();
  }
+
+//  <!-- Plugin123@
+// wisdm@shilavillaresort.com -->
 
 
 ?>
