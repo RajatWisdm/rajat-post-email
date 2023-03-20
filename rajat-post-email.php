@@ -109,8 +109,6 @@ class PostEmail{
     function send_email( $post_id ) {
         $post = get_post( $post_id );
 
-        
-
         $score = $this->get_speed_test_result( $post_id );
 
         // echo "Google PageSpeed score for $url: $score";
