@@ -16,7 +16,7 @@
 				<p>
 					<label>Receiver Email Id</label>
 					<br />
-					<input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="email address" />
+					<input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="email address" required />
 				</p>
 		</div><!-- #universal-message-container -->
         <button class="btn btn-success" type="submit">Submit</button>
