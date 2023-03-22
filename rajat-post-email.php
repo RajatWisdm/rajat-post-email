@@ -105,36 +105,19 @@ function send_email() {
         Meta keyword: ".get_post_meta( $post->ID )."\n
         Page speed score: ". $score."\n
         " . get_permalink( $post->ID );
-        $recipient = get_bloginfo('admin_email');
-        if ( get_option( 'post_email_user' ) ){
-            $recipient = get_option( 'post_email_user' );
-        }
-        $from = "wisdm@shilavillaresort.com";
-        $header = "From: $from";
-        if(mail( $recipient, $subject, $message, $header )){
-            echo 'done';
-        }
-        else{
-            mail( $recipient, $subject, "error", $header );
-        }
-
-
-        $message .= $post->post_title . " (ID: " . $post->ID . ")\r\n";
-        $url = get_permalink($post);
-
-        $message.="Meta URl ".$url."\r\n";
-
-        $response = wp_remote_retrieve_body(wp_remote_get($url));
-        $meta_desc = wdm_get_meta_desc($response);
-        $meta_title = wdm_meta_title($response);
-        
-        $message.="Meta Description ".$meta_desc."\r\n";
-        $message.="Meta Title ".$meta_title."\r\n";
-        $message.="Page Speed Score ".get_page_speed_score($url)."\r\n";
     }
-       
-    // Send email
-    wp_mail( get_option( 'admin_email' ), 'Daily Posts', $message );
+    $recipient = get_bloginfo('admin_email');
+    if ( get_option( 'post_email_user' ) ){
+        $recipient = get_option( 'post_email_user' );
+    }
+    $from = "wisdm@shilavillaresort.com";
+    $header = "From: $from";
+    if(mail( $recipient, $subject, $message, $header )){
+        echo 'done';
+    }
+    else{
+        mail( $recipient, $subject, "error", $header );
+    }
 }
    
 add_action('publish_post','send_email');
@@ -174,16 +157,16 @@ function wdm_get_meta_desc($res)
 
 }
    
-function wdm_meta_title($htmlResponse)
+function wdm_meta_title($res)
 {
     $word = '<title>';
-    $index = strpos($htmlResponse, $word);
+    $index = strpos($res, $word);
     $metaTitle = '';
     if ($index !== false) {
-        $end = strpos($htmlResponse, '</title>', $index);
+        $end = strpos($res, '</title>', $index);
         $start = $index + 7;
         $length = $end - $start;
-        $metaTitle = substr($htmlResponse, $start, $length);
+        $metaTitle = substr($res, $start, $length);
     } else {
         $metaTitle = "No Title Found";
     }
